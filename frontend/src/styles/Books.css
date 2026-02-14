@@ -8,8 +8,8 @@
 .page-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.75rem;
+  align-items: flex-start;
+  margin-bottom: 2rem;
   gap: 1rem;
 }
 

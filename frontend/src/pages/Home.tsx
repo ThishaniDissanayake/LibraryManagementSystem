@@ -13,7 +13,10 @@ const Home = () => {
   return (
     <div className="home-page">
       <header className="page-header">
-        <h1>Library Management System</h1>
+        <div>
+          <h1>Library Management System</h1>
+          <p className="home-subtitle">Manage and explore your book collection</p>
+        </div>
         <div className="header-actions">
           <button className="add-book-btn" onClick={() => navigate("/add-book")}>
             + Add Book
@@ -24,17 +27,14 @@ const Home = () => {
         </div>
       </header>
 
-      <p className="home-subtitle">Browse books by category</p>
+      <div className="section-header">
+        <h2 className="section-title">Categories</h2>
+        <button className="view-all-btn" onClick={() => navigate("/books/all")}>
+          View All Books
+        </button>
+      </div>
 
       <div className="category-grid">
-        <div
-          className="category-card"
-          onClick={() => navigate("/books/all")}
-        >
-          <h3>All Books</h3>
-          <p>Browse the entire collection</p>
-        </div>
-
         {BOOK_CATEGORIES.map((cat) => (
           <div
             key={cat}
