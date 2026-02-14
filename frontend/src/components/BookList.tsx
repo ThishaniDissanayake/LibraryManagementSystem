@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import type { Book } from "../types/Book";
 import { BOOK_CATEGORIES } from "./BookForm";
@@ -17,6 +18,10 @@ const BookList = ({ refresh, selectedCategory }: Props) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
+  const navigate = useNavigate();
+
+  const DESC_LIMIT = 200;
 
   const loadBooks = async () => {
     try {
@@ -95,9 +100,17 @@ const BookList = ({ refresh, selectedCategory }: Props) => {
             <h3 className="book-title">{b.title}</h3>
             <p className="book-author">by {b.author}</p>
             {b.description && (
-              <p className="book-description">{b.description}</p>
+              <p className="book-description">
+                {b.description.length > DESC_LIMIT && !expandedIds.has(b.id!)
+                  ? <>{b.description.slice(0, DESC_LIMIT)}... <button className="see-more-btn" onClick={() => setExpandedIds(prev => new Set(prev).add(b.id!))}>see more</button></>
+                  : b.description
+                }
+              </p>
             )}
             <div className="book-actions">
+              <button className="btn-view" onClick={() => navigate(`/book/${b.id}`)}>
+                View
+              </button>
               <button className="btn-edit" onClick={() => openEditModal(b)}>
                 Edit
               </button>

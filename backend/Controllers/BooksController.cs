@@ -18,6 +18,14 @@ public class BooksController : ControllerBase
     public async Task<IActionResult> GetBooks()
         => Ok(await _context.Books.ToListAsync());
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetBook(int id)
+    {
+        var book = await _context.Books.FindAsync(id);
+        if (book == null) return NotFound();
+        return Ok(book);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(Book book)
     {

@@ -76,6 +76,7 @@
 
 .add-book-page-form {
   max-width: 520px;
+  margin: 0 auto;
 }
 
 /* ── Books Section ── */
@@ -348,4 +349,76 @@ form button:disabled {
 
 .cancel-btn:hover {
   background: var(--surface-hover);
+}
+
+/* ── See More Button ── */
+.see-more-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.see-more-btn:hover {
+  color: var(--accent-hover);
+}
+
+/* ── View Button ── */
+.btn-view {
+  padding: 0.375rem 0.75rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-view:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ── Book Detail Page ── */
+.book-detail {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.book-detail-title {
+  margin: 1rem 0 0.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.book-detail-author {
+  margin: 0 0 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  font-style: italic;
+}
+
+.book-detail-description h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.book-detail-description p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
