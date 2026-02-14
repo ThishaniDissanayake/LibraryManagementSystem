@@ -1,14 +1,20 @@
+using backend.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=library.db"));
 
 // Add services to the container
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo 
-    { 
-        Title = "Library Management API", 
-        Version = "v1" 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Library Management API",
+        Version = "v1"
     });
 });
 
@@ -21,7 +27,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Library Management API V1");
-        c.RoutePrefix = string.Empty; // Swagger opens at root (http://localhost:5041/)
+        c.RoutePrefix = string.Empty;
     });
 }
 
