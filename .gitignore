@@ -108,6 +108,10 @@ StyleCopReport.xml
 
 # Node modules (if any frontend)
 node_modules/
+package-lock.json
+dist/
+dist-ssr/
+*.local
 
 # Others
 *.Cache
