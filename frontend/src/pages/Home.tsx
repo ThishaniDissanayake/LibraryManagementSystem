@@ -5,13 +5,23 @@ import "../styles/Home.css";
 const Home = () => {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   return (
     <div className="home-page">
       <header className="page-header">
         <h1>Library Management System</h1>
-        <button className="add-book-btn" onClick={() => navigate("/add-book")}>
-          + Add Book
-        </button>
+        <div className="header-actions">
+          <button className="add-book-btn" onClick={() => navigate("/add-book")}>
+            + Add Book
+          </button>
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
       </header>
 
       <p className="home-subtitle">Browse books by category</p>

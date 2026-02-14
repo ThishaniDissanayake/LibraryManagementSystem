@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser } from "../services/authService";
+import libraryBg from "../assets/library.jpg";
 import "./Auth.css";
 
 export default function Login() {
@@ -23,7 +24,7 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-bg">
+    <div className="auth-bg" style={{ backgroundImage: `url(${libraryBg})` }}>
       <div className="auth-card">
         <h2>Welcome Back</h2>
         <p className="auth-subtitle">Sign in to your library account</p>

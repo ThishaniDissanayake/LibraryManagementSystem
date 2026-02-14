@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../services/authService";
+import libraryBg from "../assets/library.jpg";
 import "./Auth.css";
 
 export default function Register() {
@@ -23,7 +24,7 @@ export default function Register() {
   };
 
   return (
-    <div className="auth-bg">
+    <div className="auth-bg" style={{ backgroundImage: `url(${libraryBg})` }}>
       <div className="auth-card">
         <h2>Create Account</h2>
         <p className="auth-subtitle">Join the library community</p>
