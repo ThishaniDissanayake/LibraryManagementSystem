@@ -1,9 +1,10 @@
 using backend.Data;
+using backend.DTOs;
 using backend.Helpers;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Library.Api.Controllers
+namespace backend.Controllers
 {
     [ApiController]
     [Route("api/auth")]
@@ -18,16 +19,21 @@ namespace Library.Api.Controllers
 
         // REGISTER
         [HttpPost("register")]
-        public IActionResult Register(User user)
+        public IActionResult Register(RegisterDto registerDto)
         {
-            if (string.IsNullOrEmpty(user.Username) ||
-                string.IsNullOrEmpty(user.Email) ||
-                string.IsNullOrEmpty(user.PasswordHash))
+            if (string.IsNullOrEmpty(registerDto.Username) ||
+                string.IsNullOrEmpty(registerDto.Email) ||
+                string.IsNullOrEmpty(registerDto.PasswordHash))
             {
                 return BadRequest("All fields are required");
             }
 
-            user.PasswordHash = PasswordHelper.Hash(user.PasswordHash);
+            var user = new User
+            {
+                Username = registerDto.Username,
+                Email = registerDto.Email,
+                PasswordHash = PasswordHelper.Hash(registerDto.PasswordHash)
+            };
 
             _context.Users.Add(user);
             _context.SaveChanges();
@@ -37,18 +43,18 @@ namespace Library.Api.Controllers
 
         // LOGIN
         [HttpPost("login")]
-        public IActionResult Login(User login)
+        public IActionResult Login(LoginDto loginDto)
         {
-            var hash = PasswordHelper.Hash(login.PasswordHash);
+            var hash = PasswordHelper.Hash(loginDto.PasswordHash);
 
             var user = _context.Users.FirstOrDefault(u =>
-                u.Email == login.Email &&
+                u.Email == loginDto.Email &&
                 u.PasswordHash == hash);
 
             if (user == null)
                 return Unauthorized("Invalid credentials");
 
-            return Ok(user);
+            return Ok(new { username = user.Username, email = user.Email });
         }
     }
 }

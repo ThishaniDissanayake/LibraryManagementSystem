@@ -6,14 +6,14 @@ const AddBook = () => {
   const navigate = useNavigate();
 
   const handleBookAdded = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (
     <div className="books-page">
       <header className="page-header">
         <div className="header-left">
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button className="back-btn" onClick={() => navigate("/home")}>
             ← Back
           </button>
           <h1>Add New Book</h1>
@@ -21,7 +21,7 @@ const AddBook = () => {
       </header>
 
       <div className="card add-book-page-form">
-        <BookForm onBookAdded={handleBookAdded} onClose={() => navigate("/")} />
+        <BookForm onBookAdded={handleBookAdded} onClose={() => navigate("/home")} />
       </div>
     </div>
   );

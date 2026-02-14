@@ -35,7 +35,7 @@ const CategoryBooks = () => {
     <div className="books-page">
       <header className="page-header">
         <div className="header-left">
-          <button className="back-btn" onClick={() => navigate("/")}>
+          <button className="back-btn" onClick={() => navigate("/home")}>
             ← Back
           </button>
           <h1>{displayName}</h1>
