@@ -1,11 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
+  --bg: #f8f9fb;
+  --surface: #ffffff;
+  --surface-hover: #f3f4f6;
+  --border: #e5e7eb;
+  --border-light: #f0f1f3;
+  --text: #111827;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --accent: #111827;
+  --accent-hover: #374151;
+  --danger: #ef4444;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
   font-weight: 400;
-
-  color: #213547;
-  background-color: #ffffff;
-
+  color: var(--text);
+  background-color: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,16 +33,6 @@
   box-sizing: border-box;
 }
 
-a {
-  font-weight: 500;
-  color: #333;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #000;
-}
-
 body {
   margin: 0;
   min-width: 320px;
@@ -33,17 +40,9 @@ body {
 }
 
 #root {
-  width: 100%;  
+  width: 100%;
 }
 
-h1 {
-  font-size: 2em;
-  line-height: 1.1;
-  color: #1a1a1a;
-}
-
-@media (min-width: 768px) {
-  h1 {
-    font-size: 3.2em;
-  }
+h1, h2, h3 {
+  letter-spacing: -0.025em;
 }

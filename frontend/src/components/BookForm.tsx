@@ -66,41 +66,53 @@ const BookForm = ({ onBookAdded, onClose, defaultCategory }: Props) => {
       {error && <p className="error">{error}</p>}
 
       <form onSubmit={handleSubmit}>
-        <input
-          name="title"
-          placeholder="Title"
-          value={book.title}
-          onChange={handleChange}
-          required
-        />
+        <div className="form-group">
+          <label>Title</label>
+          <input
+            name="title"
+            placeholder="Enter book title"
+            value={book.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <input
-          name="author"
-          placeholder="Author"
-          value={book.author}
-          onChange={handleChange}
-          required
-        />
+        <div className="form-group">
+          <label>Author</label>
+          <input
+            name="author"
+            placeholder="Enter author name"
+            value={book.author}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <select
-          name="category"
-          value={book.category}
-          onChange={handleChange}
-          required
-        >
-          {BOOK_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
+        <div className="form-group">
+          <label>Category</label>
+          <select
+            name="category"
+            value={book.category}
+            onChange={handleChange}
+            required
+          >
+            {BOOK_CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={book.description}
-          onChange={handleChange}
-        />
+        <div className="form-group">
+          <label>Description</label>
+          <textarea
+            name="description"
+            placeholder="Enter a brief description"
+            value={book.description}
+            onChange={handleChange}
+          />
+        </div>
 
         <div className="form-actions">
           <button type="submit" disabled={loading}>

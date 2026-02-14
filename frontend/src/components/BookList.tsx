@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import type { Book } from "../types/Book";
+import { BOOK_CATEGORIES } from "./BookForm";
+import Modal from "./Modal";
 import "../styles/Books.css";
 
 interface Props {
@@ -12,6 +14,7 @@ const BookList = ({ refresh, selectedCategory }: Props) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -40,7 +43,7 @@ const BookList = ({ refresh, selectedCategory }: Props) => {
   }, [books, selectedCategory]);
 
   const deleteBook = async (id?: number) => {
-    if (!confirm("Delete this book?")) return;
+    if (!confirm("Are you sure you want to delete this book?")) return;
 
     try {
       await api.delete(`/books/${id}`);
@@ -50,12 +53,22 @@ const BookList = ({ refresh, selectedCategory }: Props) => {
     }
   };
 
+  const openEditModal = (book: Book) => {
+    setEditingBook({ ...book });
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setEditingBook(null);
+    setIsEditModalOpen(false);
+  };
+
   const updateBook = async () => {
     if (!editingBook) return;
 
     try {
       await api.put(`/books/${editingBook.id}`, editingBook);
-      setEditingBook(null);
+      closeEditModal();
       loadBooks();
     } catch {
       alert("Update failed");
@@ -64,82 +77,98 @@ const BookList = ({ refresh, selectedCategory }: Props) => {
 
   return (
     <>
-      {loading && <p className="loading">Loading...</p>}
+      {loading && <p className="loading">Loading books...</p>}
       {error && <p className="error">{error}</p>}
 
       {!loading && filteredBooks.length === 0 && (
-        <p className="no-books">No books found in this category.</p>
+        <div className="no-books">
+          <p>No books found in this category.</p>
+        </div>
       )}
 
       <div className="book-grid">
         {filteredBooks.map((b) => (
-          <div key={b.id} className="card book-card">
-            {editingBook?.id === b.id ? (
-              <>
-                <input
-                  value={editingBook!.title}
-                  onChange={(e) =>
-                    setEditingBook({ ...editingBook!, title: e.target.value })
-                  }
-                />
-
-                <input
-                  value={editingBook!.author}
-                  onChange={(e) =>
-                    setEditingBook({ ...editingBook!, author: e.target.value })
-                  }
-                />
-
-                <textarea
-                  value={editingBook!.description}
-                  onChange={(e) =>
-                    setEditingBook({
-                      ...editingBook!,
-                      description: e.target.value
-                    })
-                  }
-                />
-
-                <div className="book-actions">
-                  <button className="primary-btn" onClick={updateBook}>
-                    Save
-                  </button>
-
-                  <button
-                    className="delete-btn"
-                    onClick={() => setEditingBook(null)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="book-category-badge">{b.category || "General"}</div>
-                <h3>{b.title}</h3>
-                <p><b>{b.author}</b></p>
-                <p>{b.description}</p>
-
-                <div className="book-actions">
-                  <button
-                    className="edit-btn"
-                    onClick={() => setEditingBook(b)}
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteBook(b.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </>
+          <div key={b.id} className="book-card">
+            <div className="book-card-header">
+              <span className="book-category-badge">{b.category || "General"}</span>
+            </div>
+            <h3 className="book-title">{b.title}</h3>
+            <p className="book-author">by {b.author}</p>
+            {b.description && (
+              <p className="book-description">{b.description}</p>
             )}
+            <div className="book-actions">
+              <button className="btn-edit" onClick={() => openEditModal(b)}>
+                Edit
+              </button>
+              <button className="btn-delete" onClick={() => deleteBook(b.id)}>
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
+
+      <Modal isOpen={isEditModalOpen} onClose={closeEditModal} title="Edit Book">
+        {editingBook && (
+          <div className="book-form-content">
+            <form onSubmit={(e) => { e.preventDefault(); updateBook(); }}>
+              <div className="form-group">
+                <label>Title</label>
+                <input
+                  value={editingBook.title}
+                  onChange={(e) =>
+                    setEditingBook({ ...editingBook, title: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Author</label>
+                <input
+                  value={editingBook.author}
+                  onChange={(e) =>
+                    setEditingBook({ ...editingBook, author: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Category</label>
+                <select
+                  value={editingBook.category || "General"}
+                  onChange={(e) =>
+                    setEditingBook({ ...editingBook, category: e.target.value })
+                  }
+                >
+                  {BOOK_CATEGORIES.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  value={editingBook.description}
+                  onChange={(e) =>
+                    setEditingBook({ ...editingBook, description: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="form-actions">
+                <button type="submit">Save Changes</button>
+                <button type="button" onClick={closeEditModal} className="cancel-btn">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+      </Modal>
     </>
   );
 };

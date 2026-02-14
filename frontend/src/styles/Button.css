@@ -1,70 +1,62 @@
 .btn {
-  padding: 0.6rem 1rem;
+  padding: 0.4rem 0.85rem;
   border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  border-radius: 7px;
+  font-size: 0.8rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.12s ease;
   font-family: inherit;
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
-@media (min-width: 640px) {
-  .btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.95rem;
-  }
-}
-
 .primary-btn {
-  background: #333;
+  background: var(--accent);
   color: white;
 }
 
 .primary-btn:hover:not(:disabled) {
-  background: #1a1a1a;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: var(--accent-hover);
 }
 
 .edit-btn {
-  background: #555;
-  color: white;
+  background: var(--bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
 }
 
 .edit-btn:hover:not(:disabled) {
-  background: #444;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: var(--text);
+  color: #fff;
+  border-color: var(--text);
 }
 
 .delete-btn {
-  background: #1a1a1a;
-  color: white;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
 }
 
 .delete-btn:hover:not(:disabled) {
-  background: #000;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  background: #fef2f2;
+  color: var(--danger);
+  border-color: #fecaca;
 }
 
 .secondary-btn {
-  background: #888;
-  color: white;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
 }
 
 .secondary-btn:hover:not(:disabled) {
-  background: #777;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  background: var(--surface-hover);
 }
 
 .btn:active:not(:disabled) {
-  transform: translateY(0);
+  transform: scale(0.97);
 }

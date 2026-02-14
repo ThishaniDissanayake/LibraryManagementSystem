@@ -38,6 +38,7 @@ public class BooksController : ControllerBase
         existing.Title = book.Title;
         existing.Author = book.Author;
         existing.Description = book.Description;
+        existing.Category = book.Category;
 
         await _context.SaveChangesAsync();
         return Ok(existing);
