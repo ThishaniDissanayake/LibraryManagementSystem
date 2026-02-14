@@ -5,10 +5,12 @@ import "../styles/Books.css";
 
 interface Props {
   refresh: boolean;
+  selectedCategory: string;
 }
 
-const BookList = ({ refresh }: Props) => {
+const BookList = ({ refresh, selectedCategory }: Props) => {
   const [books, setBooks] = useState<Book[]>([]);
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -28,6 +30,14 @@ const BookList = ({ refresh }: Props) => {
   useEffect(() => {
     loadBooks();
   }, [refresh]);
+
+  useEffect(() => {
+    if (selectedCategory === "All") {
+      setFilteredBooks(books);
+    } else {
+      setFilteredBooks(books.filter(b => b.category === selectedCategory));
+    }
+  }, [books, selectedCategory]);
 
   const deleteBook = async (id?: number) => {
     if (!confirm("Delete this book?")) return;
@@ -53,14 +63,16 @@ const BookList = ({ refresh }: Props) => {
   };
 
   return (
-    <div className="card">
-      <h2>Books</h2>
-
+    <>
       {loading && <p className="loading">Loading...</p>}
       {error && <p className="error">{error}</p>}
 
+      {!loading && filteredBooks.length === 0 && (
+        <p className="no-books">No books found in this category.</p>
+      )}
+
       <div className="book-grid">
-        {books.map((b) => (
+        {filteredBooks.map((b) => (
           <div key={b.id} className="card book-card">
             {editingBook?.id === b.id ? (
               <>
@@ -103,6 +115,7 @@ const BookList = ({ refresh }: Props) => {
               </>
             ) : (
               <>
+                <div className="book-category-badge">{b.category || "General"}</div>
                 <h3>{b.title}</h3>
                 <p><b>{b.author}</b></p>
                 <p>{b.description}</p>
@@ -127,7 +140,7 @@ const BookList = ({ refresh }: Props) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
