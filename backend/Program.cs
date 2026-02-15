@@ -33,22 +33,34 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Seed database on first run
+// Ensure database is created and seeded
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // Try migrate first, if that fails, force create tables
     try
     {
-        db.Database.Migrate(); // Ensure DB is created and migrations applied
+        db.Database.Migrate();
     }
     catch (Exception ex)
     {
         Console.WriteLine($"Migration warning: {ex.Message}");
-        // If migration fails, ensure database exists
-        db.Database.EnsureCreated();
     }
-    var sqlSeedPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SampleData.sql");
-    backend.Data.DbSeeder.SeedIfEmpty(db, sqlSeedPath);
+
+    // Always ensure tables exist (safe to call even if they already exist)
+    db.Database.EnsureCreated();
+
+    // Seed sample data
+    try
+    {
+        var sqlSeedPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SampleData.sql");
+        backend.Data.DbSeeder.SeedIfEmpty(db, sqlSeedPath);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Seeding skipped: {ex.Message}");
+    }
 }
 
 // Configure Swagger middleware
