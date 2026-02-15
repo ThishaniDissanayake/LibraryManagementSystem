@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:5116/api"
+  baseURL: "https://librarymanagementsystem-production-c055.up.railway.app/api"
 });
