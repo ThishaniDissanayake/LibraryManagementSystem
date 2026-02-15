@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
+        policy.AllowAnyOrigin()
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -30,7 +30,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+
 var app = builder.Build();
+
+// Seed database on first run
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate(); // Ensure DB is created and migrations applied
+    var sqlSeedPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SampleData.sql");
+    backend.Data.DbSeeder.SeedIfEmpty(db, sqlSeedPath);
+}
 
 // Configure Swagger middleware
 if (app.Environment.IsDevelopment())
