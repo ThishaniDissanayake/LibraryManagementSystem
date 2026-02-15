@@ -120,17 +120,6 @@ npm run dev
 
 The frontend will be available at `http://localhost:5173`
 
-### 4. Load Sample Data (Optional)
-
-To populate the database with 15 sample books:
-
-```bash
-# From the backend directory
-sqlite3 library.db < ../SampleData.sql
-```
-
-Or manually copy and execute the SQL from `SampleData.sql`
-
 ## 📁 Project Structure
 
 ```
@@ -263,29 +252,6 @@ The application uses a cohesive design system with CSS custom properties:
 | `/book/:id` | BookDetail | Single book details |
 | `/add-book` | AddBook | Add new book form |
 
-## 🎯 Assignment Requirements Checklist
-
-### Core Requirements ✅
-- [x] Backend API with CRUD operations
-- [x] Frontend user interface
-- [x] Database integration
-- [x] Create/Add books
-- [x] Read/View books
-- [x] Update/Edit books
-- [x] Delete books
-- [x] List all books
-- [x] Responsive design
-- [x] Professional UI/UX
-
-### Bonus Features ✅
-- [x] User authentication (login/register)
-- [x] Password encryption
-- [x] Category filtering
-- [x] Search by category
-- [x] Detailed book view
-- [x] Client-side routing
-- [x] Session management
-- [x] Modern design system
 
 ## 🔧 Development
 
@@ -296,7 +262,6 @@ The application uses a cohesive design system with CSS custom properties:
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run preview      # Preview production build
-npm run lint         # Run ESLint
 ```
 
 #### Backend
@@ -341,24 +306,4 @@ To capture the screenshots for the README:
 
 Save screenshots to a `screenshots/` folder in the root directory.
 
-## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 👨‍💻 Author
-
-Created as part of SE Internship Assignment
-
-## 🙏 Acknowledgments
-
-- Design inspiration from Notion and Linear
-- Icons and imagery for authentication pages
-- Open source community for excellent tools and frameworks
-
----
-
-**Note:** This is an educational project demonstrating full-stack development skills with modern web technologies.
