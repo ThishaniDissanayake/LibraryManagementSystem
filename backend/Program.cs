@@ -37,7 +37,16 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate(); // Ensure DB is created and migrations applied
+    try
+    {
+        db.Database.Migrate(); // Ensure DB is created and migrations applied
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Migration warning: {ex.Message}");
+        // If migration fails, ensure database exists
+        db.Database.EnsureCreated();
+    }
     var sqlSeedPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "SampleData.sql");
     backend.Data.DbSeeder.SeedIfEmpty(db, sqlSeedPath);
 }
