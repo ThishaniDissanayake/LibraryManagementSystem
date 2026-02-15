@@ -38,18 +38,44 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-    // Try migrate first, if that fails, force create tables
-    try
+    // Check if Books table exists
+    var conn = db.Database.GetDbConnection();
+    conn.Open();
+    var tableExists = false;
+    using (var cmd = conn.CreateCommand())
     {
-        db.Database.Migrate();
+        cmd.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='Books';";
+        tableExists = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Migration warning: {ex.Message}");
-    }
+    conn.Close();
 
-    // Always ensure tables exist (safe to call even if they already exist)
-    db.Database.EnsureCreated();
+    if (!tableExists)
+    {
+        Console.WriteLine("Tables missing - clearing migration history and re-running...");
+        // Clear corrupted migration history so Migrate() actually creates tables
+        try
+        {
+            db.Database.ExecuteSqlRaw("DELETE FROM \"__EFMigrationsHistory\";");
+        }
+        catch { /* table might not exist yet */ }
+
+        try
+        {
+            db.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Migration failed: {ex.Message}, trying EnsureCreated...");
+            // Last resort: delete migration tracking and use EnsureCreated
+            try { db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"__EFMigrationsHistory\";"); } catch { }
+            try { db.Database.ExecuteSqlRaw("DROP TABLE IF EXISTS \"__EFMigrationsLock\";"); } catch { }
+            db.Database.EnsureCreated();
+        }
+    }
+    else
+    {
+        Console.WriteLine("Database tables already exist.");
+    }
 
     // Seed sample data
     try
@@ -74,7 +100,11 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// Only redirect to HTTPS in development (Railway handles HTTPS externally)
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowFrontend");
 
